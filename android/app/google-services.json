@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "803793689212",
+    "project_id": "hotel-reserved",
+    "storage_bucket": "hotel-reserved.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803793689212:android:9d96c567685cfd0b55c7f9",
+        "android_client_info": {
+          "package_name": "com.example.hotel_reserved_seat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803793689212-7toucrllpqg0cut5vkncbtuij1q46ome.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC70-AbZPhmzsB6RFjov97CuwzYflbS83Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803793689212-7toucrllpqg0cut5vkncbtuij1q46ome.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
