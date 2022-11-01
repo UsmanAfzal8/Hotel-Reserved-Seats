@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screen/main_screen/main_screen.dart';
 import 'screen/map_screen.dart';
+import 'screen/user_screen/user_screen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainScreen(),
+      home: const UserScreen(),
     );
   }
 }
