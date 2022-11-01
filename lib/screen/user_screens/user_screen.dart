@@ -9,6 +9,24 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const ForText(
+          name: 'Hotels',
+          bold: true,
+        ),
+        centerTitle: true,
+        leading: IconButton(
+            onPressed: (() {
+              // Provider.of<AppProvider>(context, listen: false).onTabTapped(0);
+              Navigator.pop(context);
+            }),
+            icon: const Icon(
+              Icons.arrow_back_ios_sharp,
+              color: Colors.black,
+            )),
+      ),
       backgroundColor: const Color(0xfff1f5f1),
       body: SafeArea(
         child: Padding(

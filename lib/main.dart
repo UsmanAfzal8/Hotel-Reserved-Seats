@@ -1,10 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'screen/main_screen/main_screen.dart';
 import 'screen/map_screen.dart';
-import 'screen/user_screen/user_screen.dart';
+import 'screen/user_screens/user_screen.dart';
 
 void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
