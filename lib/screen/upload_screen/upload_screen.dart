@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:hotel_reserved_seat/model/hotels.dart';
+import 'package:hotel_reserved_seat/provider/hotel_upload_provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../../custom_widget/elevated_button_custom_widget.dart';
 import '../../custom_widget/text_custom_widget.dart';
 import '../../custom_widget/text_form_custom.widget.dart';
@@ -11,6 +13,7 @@ import '../../database/database_storage_api.dart';
 import '../../database/hotel_api.dart';
 import '../../function/time_date_function.dart';
 import '../../utilities/image_picker.dart';
+import 'location_screen.dart';
 
 class UploadScreen extends StatefulWidget {
   const UploadScreen({super.key});
@@ -22,12 +25,14 @@ class UploadScreen extends StatefulWidget {
 class _UploadScreenState extends State<UploadScreen> {
   final TextEditingController seats = TextEditingController();
   final TextEditingController hotelname = TextEditingController();
-  final TextEditingController hoteldescription = TextEditingController();
+  final TextEditingController status = TextEditingController();
 
   Uint8List? _image;
   bool _isloading = false;
   final _formKey = GlobalKey<FormState>();
   Future<void> uploaddata() async {
+    print('Upload main enter ho giya ha');
+    HotelProvider hotelPro = Provider.of<HotelProvider>(context, listen: false);
     if (_formKey.currentState!.validate() && _image != null) {
       setState(() {
         _isloading = true;
@@ -37,20 +42,18 @@ class _UploadScreenState extends State<UploadScreen> {
         'tester',
         _image!,
       );
-
-      Hotel hotel = Hotel(
-          hid: 'firsthotel',
-          seats: int.parse(seats.text),
-          hotelname: hotelname.text,
-         
-          timestamp: TimeStamp.timestamp,
-          imageurl: imageurl,
-          
-          status: 'true');
-      bool temp = await HotelApi().add(hotel);
-      if (temp) {
-        CustomToast.successToast(message: 'ho giya upload');
+      if (imageurl.isNotEmpty) {
+        hotelPro.valuechange(
+            hotelname.text, int.parse(seats.text), status.text, imageurl);
       }
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        // ignore: always_specify_types
+        MaterialPageRoute(
+          builder: (BuildContext context) => const LocationScreen(),
+        ),
+      );
       setState(() {
         _isloading = false;
       });
@@ -69,14 +72,30 @@ class _UploadScreenState extends State<UploadScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Upload'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const ForText(
+          name: 'Upload Resturent',
+          bold: true,
+        ),
+        centerTitle: true,
+        leading: IconButton(
+            onPressed: (() {
+              // Provider.of<AppProvider>(context, listen: false).onTabTapped(0);
+              Navigator.pop(context);
+            }),
+            icon: const Icon(
+              Icons.arrow_back_ios_sharp,
+              color: Colors.black,
+            )),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Form(
-            key: _formKey,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 _image != null
                     ? GestureDetector(
@@ -121,13 +140,15 @@ class _UploadScreenState extends State<UploadScreen> {
                         ),
                       ),
                 textField(context, hotelname, 'Hotel name'),
-                textField(context, hoteldescription, 'Hotel Description'),
-                textField(context, seats, 'amount'),
-                const SizedBox(height: 20),
+                textField(context, status, 'Status'),
+                textField(context, seats, 'seats'),
+                SizedBox(
+                  height: 50,
+                ),
                 _isloading
                     ? const CircularProgressIndicator()
                     : CustomElevatedButton(
-                        title: 'upload',
+                        title: 'Next',
                         onTap: () {
                           uploaddata();
                         })

@@ -1,14 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
-class HotelUpload with ChangeNotifier {
+class HotelProvider with ChangeNotifier {
   String? _name;
-  double? _totalseats;
+  int? _totalseats;
   String? _status;
-  Uint8List? _image;
+  String? _imageurl;
 
-  Uint8List? get Image => _image;
+  String? get imageurl => _imageurl;
   String? get name => _name;
-  double? get totalseats => _totalseats;
+  int? get totalseats => _totalseats;
   String? get status => _status;
+  valuechange(String name, int seats, String status, String image) {
+    print('prvider main phoch giya ha');
+    _name = name;
+    _imageurl = image;
+    _status = status;
+    _totalseats = seats;
+    notifyListeners();
+  }
 }
