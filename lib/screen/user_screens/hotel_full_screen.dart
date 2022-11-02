@@ -137,7 +137,7 @@ class _HotelFullScreenState extends State<HotelFullScreen> {
                     initialCameraPosition: cameraPosition,
                     // ignore: always_specify_types
                     markers: {
-                      Marker(
+                      Marker( 
                         onTap: () {
                           showModalBottomSheet(
                               shape: RoundedRectangleBorder(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_reserved_seat/custom_widget/custom_widget.dart';
+import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/allhotels_provider.dart';
@@ -22,13 +23,14 @@ class HotelsListWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: InkWell(
               onTap: () {
-                 Navigator.push(
-                            context,
-                            // ignore: always_specify_types
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>  HotelFullScreen(hotel: hotelPro.hotels[index]),
-                            ),
-                          );
+                Navigator.push(
+                  context,
+                  // ignore: always_specify_types
+                  MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        HotelFullScreen(hotel: hotelPro.hotels[index]),
+                  ),
+                );
               },
               child: Container(
                 height: 160,
@@ -90,7 +92,51 @@ class HotelsListWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                          "Scan\nto access my profile"),
+                                      content: const Text(
+                                          "It will show website if any one scan it."),
+                                      actions: [
+                                        Column(
+                                          children: [
+                                            Center(
+                                              child: SizedBox(
+                                                height: 200,
+                                                width: 200,
+                                                child: PrettyQr(
+                                                  image: const AssetImage(
+                                                      'assets/images/kliky_logo.png'),
+                                                  typeNumber: 3,
+                                                  size: 200,
+                                                  data:
+                                                      'https://www.google.com',
+                                                  errorCorrectLevel:
+                                                      QrErrorCorrectLevel.M,
+                                                  roundEdges: true,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('cancel')),
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                    ;
+                                  },
+                                );
+                              },
                               icon: const Icon(
                                 CupertinoIcons.qrcode_viewfinder,
                               )),

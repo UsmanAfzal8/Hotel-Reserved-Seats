@@ -51,6 +51,7 @@ dependencies:
   geocoding: ^2.0.5
   geolocator: ^9.0.2
   uuid: ^3.0.6
+  pretty_qr_code: ^2.0.2
   
 
 dev_dependencies:
