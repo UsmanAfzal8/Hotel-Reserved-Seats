@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_reserved_seat/custom_widget/custom_widget.dart';
+import 'package:provider/provider.dart';
 
-import 'hotels_list.dart';
+import '../../provider/allhotels_provider.dart';
+import '../../widget/hotels_list.dart';
 
-class UserScreen extends StatelessWidget {
+class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
+
+  @override
+  State<UserScreen> createState() => _UserScreenState();
+}
+
+class _UserScreenState extends State<UserScreen> {
+  void initState() {
+    super.initState();
+    load();
+  }
+
+  load() {
+    HotelGetProvider hotelPro = Provider.of<HotelGetProvider>(context,listen: false);
+    hotelPro.load();
+  }
 
   @override
   Widget build(BuildContext context) {

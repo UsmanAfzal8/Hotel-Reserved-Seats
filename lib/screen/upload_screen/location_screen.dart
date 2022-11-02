@@ -1,16 +1,16 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hotel_reserved_seat/custom_widget/elevated_button_custom_widget.dart';
-import 'package:location/location.dart';
+import 'package:location/location.dart' as loc;
 import 'package:provider/provider.dart';
-
 import '../../custom_widget/text_custom_widget.dart';
 import '../../provider/hotel_upload_provider.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});
+  static String routes = '/locationscreen';
 
   @override
   State<LocationScreen> createState() => _LocationScreenState();
@@ -23,7 +23,7 @@ class _LocationScreenState extends State<LocationScreen> {
   BitmapDescriptor currrenticon = BitmapDescriptor.defaultMarker;
   CameraPosition cameraPosition =
       CameraPosition(zoom: 14, target: LatLng(currentlat, currentlng));
-  LocationData? currentlocation;
+  loc.LocationData? currentlocation;
 
   @override
   void initState() {
@@ -56,26 +56,39 @@ class _LocationScreenState extends State<LocationScreen> {
       body: Column(
         children: [
           Expanded(
-           child: currentlocation == null
-          ? const Center(child: CircularProgressIndicator())
-          : GoogleMap(
-              initialCameraPosition: cameraPosition,
-              markers: {
-                Marker(
-                  markerId: const MarkerId('current location'),
-                  icon: currrenticon,
-                  position: LatLng(currentlat, currentlng),
-                ),
-              },
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            ),
+            child: currentlocation == null
+                ? const Center(child: CircularProgressIndicator())
+                : GoogleMap(
+                    initialCameraPosition: cameraPosition,
+                    markers: {
+                      Marker(
+                        onTap: () {},
+                        markerId: const MarkerId('current location'),
+                        icon: currrenticon,
+                        position: LatLng(currentlat, currentlng),
+                      ),
+                    },
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                  ),
           ),
-          CustomElevatedButton(
+        hotelPro.onchanged? const CircularProgressIndicator(): CustomElevatedButton(
               title: 'Upload',
-              onTap: () {
-                
+              onTap: () async {
+                List<Placemark> placemarks =
+                    await placemarkFromCoordinates(currentlat, currentlng);
+                bool temp = hotelPro.locationupdate(
+                  currentlat.toString(),
+                  currentlng.toString(),
+                  placemarks[0].country.toString(),
+                  placemarks[0].locality!,
+                  placemarks[0].subLocality!,
+                );
+                if (temp) {
+                 // ignore: use_build_context_synchronously
+                 hotelPro.onRegister(context);
+                }
               })
         ],
       ),
@@ -83,7 +96,7 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   Future<void> getCurrentLocation() async {
-    Location location = Location();
+    loc.Location location = loc.Location();
     location.getLocation().then((location) async {
       currentlocation = location;
       setState(() {

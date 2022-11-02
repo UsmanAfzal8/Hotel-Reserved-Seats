@@ -14,6 +14,7 @@ import '../../database/hotel_api.dart';
 import '../../function/time_date_function.dart';
 import '../../utilities/image_picker.dart';
 import 'location_screen.dart';
+import 'package:uuid/uuid.dart';
 
 class UploadScreen extends StatefulWidget {
   const UploadScreen({super.key});
@@ -26,7 +27,7 @@ class _UploadScreenState extends State<UploadScreen> {
   final TextEditingController seats = TextEditingController();
   final TextEditingController hotelname = TextEditingController();
   final TextEditingController status = TextEditingController();
-
+  String uid = Uuid().v4();
   Uint8List? _image;
   bool _isloading = false;
   final _formKey = GlobalKey<FormState>();
@@ -37,23 +38,18 @@ class _UploadScreenState extends State<UploadScreen> {
       setState(() {
         _isloading = true;
       });
-      String imageurl = await Storagemethod().uploadtostorage(
-        'post',
-        'tester',
-        _image!,
-      );
-      if (imageurl.isNotEmpty) {
-        hotelPro.valuechange(
-            hotelname.text, int.parse(seats.text), status.text, imageurl);
+      bool temp = hotelPro.valuechange(
+          hotelname.text, int.parse(seats.text), status.text, _image!,uid);
+      if (temp) {
+        Navigator.push(
+          context,
+          // ignore: always_specify_types
+          MaterialPageRoute(
+            builder: (BuildContext context) => const LocationScreen(),
+          ),
+        );
       }
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-        context,
-        // ignore: always_specify_types
-        MaterialPageRoute(
-          builder: (BuildContext context) => const LocationScreen(),
-        ),
-      );
+
       setState(() {
         _isloading = false;
       });

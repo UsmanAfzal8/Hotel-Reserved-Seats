@@ -2,10 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'provider/allhotels_provider.dart';
 import 'provider/hotel_upload_provider.dart';
 import 'screen/main_screen/main_screen.dart';
 import 'screen/map_screen.dart';
 import 'screen/upload_screen/location_screen.dart';
+import 'screen/user_screens/hotel_full_screen.dart';
 import 'screen/user_screens/user_screen.dart';
 
 void main() async {
@@ -25,6 +27,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<HotelProvider>(
           create: (BuildContext context) => HotelProvider(),
         ),
+        ChangeNotifierProvider<HotelGetProvider>(
+          create: (BuildContext context) => HotelGetProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -32,7 +37,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const LocationScreen(),
+        home: const MainScreen(),
       ),
     );
   }

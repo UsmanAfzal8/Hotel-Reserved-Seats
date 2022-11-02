@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_reserved_seat/custom_widget/custom_widget.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/allhotels_provider.dart';
 
 class HotelsListWidget extends StatelessWidget {
   const HotelsListWidget({Key? key}) : super(key: key);
@@ -8,17 +11,16 @@ class HotelsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //  ProductProvider productPro = Provider.of<ProductProvider>(context);
+    HotelGetProvider hotelPro = Provider.of<HotelGetProvider>(context);
     return Expanded(
       child: ListView.builder(
-        itemCount: 1,
+        itemCount: hotelPro.hotels.length,
         scrollDirection: Axis.vertical,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: InkWell(
-              onTap: () {
-                
-              },
+              onTap: () {},
               child: Container(
                 height: 160,
                 width: double.infinity,
@@ -36,7 +38,11 @@ class HotelsListWidget extends StatelessWidget {
                         width: 130,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
-                            color: Colors.black),
+                            color: Colors.black,
+                            image: DecorationImage(
+                              image:
+                                  NetworkImage(hotelPro.hotels[index].imageurl),
+                            )),
                       ),
                       SizedBox(
                         width: 120,
@@ -44,14 +50,20 @@ class HotelsListWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            const ForText(
-                              name: 'Hotel name',
+                            ForText(
+                              name: hotelPro.hotels[index].hotelname,
                               bold: true,
                             ),
-                            const ForText(
-                              name: 'Hotel location sfbjgknbg d',
+                            ForText(
+                              name:
+                                  '${hotelPro.hotels[index].location.sublocality},${hotelPro.hotels[index].location.locality}',
                               color: Colors.black38,
-                              size: 14,
+                              size: 12,
+                            ),
+                            ForText(
+                              name: hotelPro.hotels[index].location.country,
+                              color: Colors.black38,
+                              size: 12,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,9 +85,11 @@ class HotelsListWidget extends StatelessWidget {
                               icon: const Icon(
                                 CupertinoIcons.qrcode_viewfinder,
                               )),
-                          const ForText(
-                            name: 'status',
-                            color: Colors.green,
+                          ForText(
+                            name: hotelPro.hotels[index].status,
+                            color: hotelPro.hotels[index].status == 'close'
+                                ? Colors.red
+                                : Colors.green,
                             size: 14,
                           )
                         ],
