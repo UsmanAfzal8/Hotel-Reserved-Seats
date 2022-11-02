@@ -4,6 +4,7 @@ import 'package:hotel_reserved_seat/custom_widget/custom_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/allhotels_provider.dart';
+import '../screen/user_screens/hotel_full_screen.dart';
 
 class HotelsListWidget extends StatelessWidget {
   const HotelsListWidget({Key? key}) : super(key: key);
@@ -20,7 +21,15 @@ class HotelsListWidget extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                 Navigator.push(
+                            context,
+                            // ignore: always_specify_types
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>  HotelFullScreen(hotel: hotelPro.hotels[index]),
+                            ),
+                          );
+              },
               child: Container(
                 height: 160,
                 width: double.infinity,
@@ -91,7 +100,7 @@ class HotelsListWidget extends StatelessWidget {
                                 ? Colors.red
                                 : Colors.green,
                             size: 14,
-                          )
+                          ),
                         ],
                       ),
                     ],
