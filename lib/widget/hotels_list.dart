@@ -93,49 +93,7 @@ class HotelsListWidget extends StatelessWidget {
                         children: [
                           IconButton(
                               onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text(
-                                          "Scan\nto access my profile"),
-                                      content: const Text(
-                                          "It will show website if any one scan it."),
-                                      actions: [
-                                        Column(
-                                          children: [
-                                            Center(
-                                              child: SizedBox(
-                                                height: 200,
-                                                width: 200,
-                                                child: PrettyQr(
-                                                  image: const AssetImage(
-                                                      'assets/images/kliky_logo.png'),
-                                                  typeNumber: 3,
-                                                  size: 200,
-                                                  data:
-                                                      'https://www.google.com',
-                                                  errorCorrectLevel:
-                                                      QrErrorCorrectLevel.M,
-                                                  roundEdges: true,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text('cancel')),
-                                          ],
-                                        ),
-                                      ],
-                                    );
-                                    ;
-                                  },
-                                );
+                                qrbox(context);
                               },
                               icon: const Icon(
                                 CupertinoIcons.qrcode_viewfinder,
@@ -157,6 +115,56 @@ class HotelsListWidget extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Future<dynamic> qrbox(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+              child: Column(
+            children: const          <Widget>[
+              Text("Scan"),
+              Text("to access my profile"),
+            ],
+          )),
+          content: const Text("It will show website if any one scan it."),
+          actions: [
+            Column(
+              children: [
+                Center(
+                  child: SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: PrettyQr(
+                      image: const AssetImage('assets/images/kliky_logo.png'),
+                      typeNumber: 3,
+                      size: 200,
+                      data: 'https://www.google.com',
+                      errorCorrectLevel: QrErrorCorrectLevel.M,
+                      roundEdges: true,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'cancel',
+                      style: TextStyle(color: Colors.black38),
+                    )),
+              ],
+            ),
+          ],
+        );
+        ;
+      },
     );
   }
 }
